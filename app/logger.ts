@@ -1,22 +1,23 @@
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getRotatingFileSink } from "@logtape/file";
 
-import { LOG_FILE_MAX_SIZE, LOG_FILE_MAX_FILES, LOG_LEVEL } from "./_environments.ts";
+import { LOG_LEVEL } from "./_environments.ts";
+import { config } from "./config.ts";
 
 
 
 await configure({
     sinks: {
         console: getConsoleSink(),
-        appJSON: getRotatingFileSink("dynip-broker.app.jsonl", {
+        appJSON: getRotatingFileSink(config.server.logger.app.file, {
             formatter: record => JSON.stringify(record) + "\n",
-            maxSize: LOG_FILE_MAX_SIZE,
-            maxFiles: LOG_FILE_MAX_FILES
+            maxSize: config.server.logger.app.max_file_size,
+            maxFiles: config.server.logger.app.max_files
         }),
-        metaJSON: getRotatingFileSink("dynip-broker.meta.jsonl", {
+        metaJSON: getRotatingFileSink(config.server.logger.meta.file, {
             formatter: record => JSON.stringify(record) + "\n",
-            maxSize: LOG_FILE_MAX_SIZE,
-            maxFiles: LOG_FILE_MAX_FILES
+            maxSize: config.server.logger.meta.max_file_size,
+            maxFiles: config.server.logger.meta.max_files
         }),
     },
     loggers: [

@@ -4,8 +4,8 @@ import {
 } from '@std/yaml'
 
 import { string, z } from 'zod'
-import { logger } from "./logger.ts";
 import { exists } from "@std/fs/exists";
+import { CONFIG_FILE } from "./_environments.ts";
 
 
 
@@ -13,15 +13,27 @@ import { exists } from "@std/fs/exists";
 export type AppConfig = z.infer<typeof AppConfig>
 export const AppConfig = z.object({
     server: z.object({
-        port: z.number().default(8080)
-    }),
+        port: z.number().default(8080),
+        logger: z.object({
+            meta: z.object({
+                file: z.string().default("dynip-broker.meta.jsonl"),
+                max_file_size: z.number().default(10 * 1024 * 1024),
+                max_files: z.number().default(10)
+            }).default({}),
+            app: z.object({
+                file: z.string().default("dynip-broker.app.jsonl"),
+                max_file_size: z.number().default(10 * 1024 * 1024),
+                max_files: z.number().default(10)    
+            }).default({})
+        }).default({})
+    }).default({}),
     nats: z.object({
         token: z.string().optional(),
         servers: z.array(z.object({
             host: z.string(),
             port: z.number().min(1024),
-        })).default([{ host: "127.0.0.1", port: 4222 }])
-    }),
+        })).min(1).default([{ host: "127.0.0.1", port: 4222 }]),
+    }).default({}),
     accountstore: z.discriminatedUnion("type", [
         z.object({
             type: z.literal("YAML"),
@@ -34,7 +46,7 @@ export const AppConfig = z.object({
             filename: z.string().nonempty()
         })
     ]).default({ type: "JSON", filename: "events.json" })
-})
+}).default({})
 
 
 
@@ -43,7 +55,7 @@ export async function loadConfig (filename: string) {
     try {
 
         if (!await exists(filename, { isFile: true })) {
-            const defaultConfig = AppConfig.default
+            const defaultConfig = AppConfig.parse({})
             const yaml = stringifyYAML(defaultConfig)
             await Deno.writeTextFile(filename, yaml)
         }
@@ -53,17 +65,17 @@ export async function loadConfig (filename: string) {
         const validation = AppConfig.safeParse(data)
         
         if (!validation.success) {
-            logger.error("Config file validation failed", { filename, errors: validation.error.errors })
             throw new Error(validation.error.message)
         }
-    
-        logger.info("Config loaded", { filename, config: validation.data })
     
         return validation.data
 
     } catch (error: unknown) {
-        logger.fatal("Failed to load config", { filename, error })
-        Deno.exit(1)
+        throw new Error(`Failed to load config: ${error}`)
     }
 
 }
+
+
+
+export const config = await loadConfig(CONFIG_FILE)
