@@ -1,4 +1,5 @@
 {
+  "name": "dynip-broker",
   "tasks": {
     "app:dev": "LOG_LEVEL=debug deno run --allow-all --watch app/main.ts",
     "app:start" : "deno run --allow-all app/main.ts"
