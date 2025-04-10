@@ -15,5 +15,8 @@
     "@std/yaml": "jsr:@std/yaml@^1.0.5",
     "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
     "zod": "npm:zod@^3.24.2"
+  },
+  "exports": {
+    ".": "./app/main.ts"
   }
 }
