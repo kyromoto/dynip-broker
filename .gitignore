@@ -5,3 +5,4 @@
 *.jsonl
 
 !deno.json
+!import_map.json
