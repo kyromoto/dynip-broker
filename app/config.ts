@@ -6,7 +6,6 @@ import {
 import { string, z } from 'zod'
 import { logger } from "./logger.ts";
 import { exists } from "@std/fs/exists";
-import { ConnectionOptions } from "@nats-io/transport-deno";
 
 
 
