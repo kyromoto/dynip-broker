@@ -1,33 +1,12 @@
 import { z } from "zod";
 
-import { logger } from "../logger.ts";
-import { destructerFetchResponse, EventQueue, SubscribeIpUpdateRequestService } from "./_shared.ts";
-import { ApplicationError } from "../controller.ts";
-
-
-
-export const ACTION_NAME = "hetzner-dns-record"
-
-export type ActionConfig = z.infer<typeof ActionConfig>
-export const ActionConfig = z.object({
-    zone: z.string(),
-    record: z.string(),
-    type: z.enum(["A", "AAAA"]),
-    token: z.string()
-})
-
-export type Action = z.infer<typeof Action>
-export const Action = z.object({
-    id: z.string().uuid().nonempty(),
-    type: z.literal(ACTION_NAME),
-    name: z.string(),
-    config: ActionConfig
-})
-
-
-export interface AccountService {
-    getActionsByClient(clientId: string): Promise<Action[]>
-}
+import { logger } from "../../_share/logger.ts";
+import { EventQueue } from "../event-queue.ts";
+import { ApplicationError } from "../../_share/errors.ts";
+import { destructerFetchResponse } from "../_helpers.ts";
+import type { SubscribeIpUpdateRequestService } from "../_interfaces.ts";
+import type { AccountService } from "./interfaces.ts";
+import { ACTION_NAME } from "./types.ts";
 
 
 

@@ -3,51 +3,32 @@ import { parse as parseYAML } from "@std/yaml";
 
 import { z } from "zod";
 
+import { logger } from "../../_share/logger.ts";
 
 import {
-    AccountService as HetznerDnsRecordAccountService,
-    Action as HetznerDnsRecordAction,
+    type Action as HetznerDnsRecordAction,
     ACTION_NAME as HetznerDnsRecordActionName
-} from "../actions/hetzner-dns-record.action.ts"
+} from "../../actions/hetzner-dns-record/types.ts"
 
 import {
-    AccountService as HetznerFirewallRuleAccountService,
-    Action as HetznerFirewallRuleAction,
+    type Action as HetznerFirewallRuleAction,
     ACTION_NAME as HetznerFirewallRuleActionName
-} from "../actions/hetzner-firewall-rule.action.ts"
+} from "../../actions/hetzner-firewall-rule/types.ts"
 
-import {
-    AccountService as ApiControllerAccountService
-} from "../controller.ts";
-import { logger } from "../logger.ts";
+import type {
+    AccountService as HetznerDnsRecordAccountService,
+} from "../../actions/hetzner-dns-record/interfaces.ts"
 
-
-export type Client = z.infer<typeof Client>
-export const Client = z.object({
-    id: z.string().uuid().nonempty(),
-    name: z.string(),
-    username: z.string(),
-    password: z.string(),
-    actions: z.array(z.string().uuid().nonempty())
-})
+import type {
+    AccountService as HetznerFirewallRuleAccountService
+} from "../../actions/hetzner-firewall-rule/interfaces.ts"
+import { Account, type Action, type Client } from "./account.models.ts";
 
 
-export type Action = z.infer<typeof Action>
-export const Action = z.discriminatedUnion('type', [
-    HetznerDnsRecordAction,
-    HetznerFirewallRuleAction
-])
-
-export type ActionType = z.infer<typeof Action>["type"]
 
 
-export type Account = z.infer<typeof Account>
-export const Account = z.object({
-    id: z.string().uuid().nonempty(),
-    username: z.string(),
-    clients: z.array(Client),
-    actions: z.array(Action)
-})
+
+
 
 
 export class YAMLAccountService {

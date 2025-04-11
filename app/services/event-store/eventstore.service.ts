@@ -2,15 +2,17 @@ import { exists } from "@std/fs/exists";
 
 import { z } from "zod";
 
-import { ApplicationEvent } from "../events.ts";
-import { ApplicationError, EventStore, EventStoreAPI } from "../controller.ts";
-import { ClientIpsProjector as HetznerFirewallRuleClientIpsProjector } from "../actions/hetzner-firewall-rule.action.ts";
-import { logger } from "../logger.ts";
+import { logger } from "../../_share/logger.ts";
+import { ApplicationError } from "../../_share/errors.ts";
+import { StoredApplicationEvent } from "./eventstore.models.ts";
 
-export type StoredApplicationEvent = z.infer<typeof StoredApplicationEvent>
-export const StoredApplicationEvent = ApplicationEvent.and(z.object({
-    sequence: z.number().min(1)
-}))
+import type { ApplicationEvent } from "../../events.ts";
+import type { EventStore, EventStoreAPI } from "../../controllers/interfaces.ts";
+import type { ClientIpsProjector as HetznerFirewallRuleClientIpsProjector } from "../../actions/hetzner-firewall-rule/interfaces.ts";
+
+
+
+
 
 
 export class JSONEventStore implements EventStore, EventStoreAPI  {

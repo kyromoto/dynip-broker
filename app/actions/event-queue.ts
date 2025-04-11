@@ -1,27 +1,9 @@
-import { Body } from "@oak/oak/body";
-import { ApplicationEvent, ApplicationEventType } from "../events.ts";
-import { url } from "node:inspector";
-import { logger } from "../logger.ts";
-import { Logger } from "@logtape/logtape";
-import { CorrelationIdContext } from "../_shared.ts";
+import type { Logger } from "@logtape/logtape";
 
-export interface SubscribeIpUpdateRequestService {
-    subscribeEvent: (type: ApplicationEventType, callback: (event: ApplicationEvent) => Promise<void>) => void
-}
-
-
-export function destructerFetchResponse(res: Response) {
-    return {
-        url: res.url,
-        status: res.status,
-        message: res.statusText,
-        body: res.headers.get("Content-Type")?.toLowerCase() === "application/json" ? res.json() : res.text()
-    }
-}
-
-
-
-export type EventQueueProcessor = (event: ApplicationEvent, cid: CorrelationIdContext) => Promise<void>
+import { logger } from "../_share/logger.ts";
+import { CorrelationIdContext } from "../_share/correltionid-context.ts";
+import type { ApplicationEvent } from "../events.ts";
+import type { EventQueueProcessor } from "./_types.ts";
 
 
 
@@ -34,7 +16,7 @@ export class EventQueue {
     private queueLogger: Logger
     private queue: ApplicationEvent[] = []
     private isProcessing = false
-    private cidContext = new CorrelationIdContext()
+    private cidContext = CorrelationIdContext.getInstance()
 
 
 
