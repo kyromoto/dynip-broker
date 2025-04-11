@@ -5,7 +5,7 @@ import {
 
 import { string, z } from 'zod'
 import { exists } from "@std/fs/exists";
-import { CONFIG_FILE } from "./_environments.ts";
+import { CONFIG_FILE } from "./environments.ts";
 
 
 

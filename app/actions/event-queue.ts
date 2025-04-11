@@ -1,9 +1,9 @@
 import type { Logger } from "@logtape/logtape";
 
-import { logger } from "../_share/logger.ts";
-import { CorrelationIdContext } from "../_share/correltionid-context.ts";
-import type { ApplicationEvent } from "../events.ts";
-import type { EventQueueProcessor } from "./_types.ts";
+import { logger } from "../share/logger.ts";
+import { CorrelationIdContext } from "../share/correltionid.ts";
+import type { ApplicationEvent } from "../share/events.ts";
+import type { EventQueueProcessor } from "./types.ts";
 
 
 

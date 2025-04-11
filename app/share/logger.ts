@@ -1,8 +1,8 @@
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getRotatingFileSink } from "@logtape/file";
 
-import { DENO_ENV, LOG_LEVEL } from "../_environments.ts";
-import { config } from "../config.ts";
+import { DENO_ENV, LOG_LEVEL } from "../share/environments.ts";
+import { config } from "../share/config.ts";
 
 
 

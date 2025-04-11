@@ -1,11 +1,11 @@
-import { ApplicationError } from "../../_share/errors.ts";
-import { destructerFetchResponse } from "../_helpers.ts";
+import { ApplicationError } from "../../share/errors.ts"
+import { destructerFetchResponse } from "../_helpers.ts"
 import {
     type Firewall,
     type FirewallRule,
     GetAllFirewallsResponse,
     SetFirewallRulesResponse
-} from "./types.ts";
+} from "./types.ts"
 
 export async function getAllFirewalls (token: string) : Promise<Firewall[]> {
 

@@ -1,7 +1,7 @@
 import type { Context, Next } from "@oak/oak";
-import { logger } from "../_share/logger.ts"
-import { CorrelationIdContext } from "../_share/correltionid-context.ts";
-import { ApplicationError, ClientError } from "../_share/errors.ts";
+import { logger } from "../share/logger.ts"
+import { CorrelationIdContext } from "../share/correltionid.ts";
+import { ApplicationError, ClientError } from "../share/errors.ts";
 
 export function createMiddlewareErrorHandler () {
 

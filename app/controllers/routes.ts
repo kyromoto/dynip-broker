@@ -1,8 +1,8 @@
 import { Router } from "@oak/oak";
 
-import { createMiddlewareAuthorizeClient } from "./controllers/client-auth.middleware.ts";
-import { createControllerUpdateIp } from "./controllers/dynip-update.controller.ts";
-import type { AccountService, EventStore, PublishApplicationEventService } from "./controllers/interfaces.ts";
+import { createMiddlewareAuthorizeClient } from "./client-auth.middleware.ts";
+import { createControllerUpdateIp } from "./dynip-update.controller.ts";
+import type { AccountService, EventStore, PublishApplicationEventService } from "./interfaces.ts";
 
 
 export function createApiRouter(accountService: AccountService, eventstoreService: EventStore, pubsub: PublishApplicationEventService) {

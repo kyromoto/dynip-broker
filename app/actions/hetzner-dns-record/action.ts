@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { logger } from "../../_share/logger.ts";
+import { logger } from "../../share/logger.ts";
 import { EventQueue } from "../event-queue.ts";
-import { ApplicationError } from "../../_share/errors.ts";
+import { ApplicationError } from "../../share/errors.ts";
 import { destructerFetchResponse } from "../_helpers.ts";
-import type { SubscribeIpUpdateRequestService } from "../_interfaces.ts";
+import type { SubscribeIpUpdateRequestService } from "../interfaces.ts";
 import type { AccountService } from "./interfaces.ts";
 import { ACTION_NAME } from "./types.ts";
 

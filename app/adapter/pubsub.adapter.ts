@@ -1,8 +1,8 @@
 import type { NatsConnection } from "@nats-io/transport-deno";
 
-import { type ApplicationEventType, ApplicationEvent } from "../events.ts";
+import { type ApplicationEventType, ApplicationEvent } from "../share/events.ts";
 import type { PublishApplicationEventService } from "../controllers/interfaces.ts";
-import type { SubscribeIpUpdateRequestService } from "../actions/_interfaces.ts";
+import type { SubscribeIpUpdateRequestService } from "../actions/interfaces.ts";
 
 
 

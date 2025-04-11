@@ -1,8 +1,8 @@
 import { decodeBase64 } from "@std/encoding/base64";
 import type { Context, Next } from "@oak/oak";
 
-import { DynipProtoError } from "../_share/errors.ts";
-import type { AccountService } from "./acount.service.ts";
+import { DynipProtoError } from "../share/errors.ts";
+import type { AccountService } from "./interfaces.ts";
 
 
 

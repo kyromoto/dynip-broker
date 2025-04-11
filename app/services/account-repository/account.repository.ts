@@ -3,7 +3,7 @@ import { parse as parseYAML } from "@std/yaml";
 
 import { z } from "zod";
 
-import { logger } from "../../_share/logger.ts";
+import { logger } from "../../share/logger.ts";
 
 import {
     type Action as HetznerDnsRecordAction,

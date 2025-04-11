@@ -1,5 +1,5 @@
 import z from "zod";
-import { ApplicationEvent } from "../../events.ts";
+import { ApplicationEvent } from "../../share/events.ts";
 
 
 

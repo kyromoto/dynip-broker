@@ -1,4 +1,4 @@
-import type { ApplicationEvent, ApplicationEventType } from "../events.ts";
+import type { ApplicationEvent, ApplicationEventType } from "../share/events.ts"
 
 
 

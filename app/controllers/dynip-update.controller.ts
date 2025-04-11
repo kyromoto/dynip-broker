@@ -1,9 +1,9 @@
-import{ z } from "zod";
-import type { Context } from "@oak/oak";
+import{ z } from "zod"
+import type { Context } from "@oak/oak"
 
-import { DynipProtoError } from "../_share/errors.ts";
-import { ClientIpV4UpdateRequestedEvent, ClientIpV6UpdateRequestedEvent } from "../events.ts";
-import type { AccountService, EventStore, PublishApplicationEventService } from "./interfaces.ts";
+import { DynipProtoError } from "../share/errors.ts"
+import { ClientIpV4UpdateRequestedEvent, ClientIpV6UpdateRequestedEvent } from "../share/events.ts"
+import type { AccountService, EventStore, PublishApplicationEventService } from "./interfaces.ts"
 
 
 

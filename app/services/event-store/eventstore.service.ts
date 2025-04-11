@@ -2,11 +2,11 @@ import { exists } from "@std/fs/exists";
 
 import { z } from "zod";
 
-import { logger } from "../../_share/logger.ts";
-import { ApplicationError } from "../../_share/errors.ts";
+import { logger } from "../../share/logger.ts";
+import { ApplicationError } from "../../share/errors.ts";
 import { StoredApplicationEvent } from "./eventstore.models.ts";
 
-import type { ApplicationEvent } from "../../events.ts";
+import type { ApplicationEvent } from "../../share/events.ts";
 import type { EventStore, EventStoreAPI } from "../../controllers/interfaces.ts";
 import type { ClientIpsProjector as HetznerFirewallRuleClientIpsProjector } from "../../actions/hetzner-firewall-rule/interfaces.ts";
 

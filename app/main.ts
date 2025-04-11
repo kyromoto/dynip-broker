@@ -1,16 +1,16 @@
 import { Application } from '@oak/oak'
 import { oakCors as cors } from "@tajpouria/cors"
 
-import { logger } from "./_share/logger.ts"
-import { config } from "./config.ts"
-import { createApiRouter } from "./routes.ts"
+import { logger } from "./share/logger.ts"
+import { config } from "./share/config.ts"
+import { createApiRouter } from "./controllers/routes.ts"
 import { createActionHetznerFirewallRule } from "./actions/hetzner-firewall-rule/action.ts";
 import { createActionHetznerDnsRecord } from "./actions/hetzner-dns-record/action.ts";
 import { YAMLAccountService } from "./services/account-repository/account.repository.ts";
 import { PublishIpUpdateRequestServiceAdapter, SubscribeIpUpdateRequestServiceAdapter } from "./adapter/pubsub.adapter.ts";
 import { JSONEventStore } from "./services/event-store/eventstore.service.ts";
 import { createMiddlewareErrorHandler } from "./controllers/error.middleware.ts";
-import { connectToNats, getNatsConnectionOptions } from "./nats.ts";
+import { connectToNats, getNatsConnectionOptions } from "./services/messaging/nats.ts";
 
 
 

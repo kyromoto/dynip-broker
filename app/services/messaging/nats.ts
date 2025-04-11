@@ -1,7 +1,8 @@
 import { connect, type ConnectionOptions, type NatsConnection } from "@nats-io/transport-deno";
 
-import type { AppConfig } from "./config.ts";
-import { logger } from "./_share/logger.ts";
+import type { AppConfig } from "../../share/config.ts"
+import { logger } from "../../share/logger.ts"
+
 
 
 export async function connectToNats (options: ConnectionOptions) : Promise<NatsConnection> {
