@@ -1,20 +1,23 @@
+import * as path from "@std/path";
+
 import { configure, getConsoleSink, getLogger } from "@logtape/logtape";
 import { getRotatingFileSink } from "@logtape/file";
 
 import { DENO_ENV, LOG_LEVEL } from "../share/environments.ts";
 import { config } from "../share/config.ts";
 
-
+const appLogFile = path.join(path.dirname(config.server.logger.folder), "dynip-broker.app.jsonl");
+const httpLogFile = path.join(path.dirname(config.server.logger.folder), "dynip-broker.http.jsonl");
 
 await configure({
     sinks: {
         console: getConsoleSink(),
-        appJSON: getRotatingFileSink(config.server.logger.folder + "dynip-broker.app.jsonl", {
+        appJSON: getRotatingFileSink(appLogFile, {
             formatter: record => JSON.stringify(record) + "\n",
             maxSize: config.server.logger.app.max_file_size,
             maxFiles: config.server.logger.app.max_files
         }),
-        httpJSON: getRotatingFileSink(config.server.logger.folder + "dynip-broker.http.jsonl", {
+        httpJSON: getRotatingFileSink(httpLogFile, {
            formatter: record => JSON.stringify(record) + "\n",
            maxSize: config.server.logger.http.max_file_size,    
            maxFiles: config.server.logger.http.max_files 
