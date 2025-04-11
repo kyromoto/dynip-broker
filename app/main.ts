@@ -11,6 +11,7 @@ import { PublishIpUpdateRequestServiceAdapter, SubscribeIpUpdateRequestServiceAd
 import { JSONEventStore } from "./services/event-store/eventstore.service.ts";
 import { createMiddlewareErrorHandler } from "./controllers/error.middleware.ts";
 import { connectToNats, getNatsConnectionOptions } from "./services/messaging/nats.ts";
+import { createMiddlewareRequestLogging } from "./controllers/logger.middleware.ts";
 
 
 
@@ -76,6 +77,7 @@ app.addEventListener("error", ev => {
 const router = createApiRouter(accountService.getApiControllerAccountService(), eventstoreService, eventPublishService);
 
 app.use(createMiddlewareErrorHandler());
+app.use(createMiddlewareRequestLogging());
 app.use(cors());
 app.use(router.routes(), router.allowedMethods());
 
