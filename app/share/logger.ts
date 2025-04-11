@@ -6,8 +6,8 @@ import { getRotatingFileSink } from "@logtape/file";
 import { DENO_ENV, LOG_LEVEL } from "../share/environments.ts";
 import { config } from "../share/config.ts";
 
-const appLogFile = path.join(path.dirname(config.server.logger.folder), "dynip-broker.app.jsonl");
-const httpLogFile = path.join(path.dirname(config.server.logger.folder), "dynip-broker.http.jsonl");
+const appLogFile = path.join(path.normalize(config.server.logger.folder), "dynip-broker.app.jsonl");
+const httpLogFile = path.join(path.normalize(config.server.logger.folder), "dynip-broker.http.jsonl");
 
 await configure({
     sinks: {
