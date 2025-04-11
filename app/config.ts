@@ -15,15 +15,14 @@ export const AppConfig = z.object({
     server: z.object({
         port: z.number().default(8080),
         logger: z.object({
-            meta: z.object({
-                file: z.string().default("dynip-broker.meta.jsonl"),
-                max_file_size: z.number().default(10 * 1024 * 1024),
-                max_files: z.number().default(10)
-            }).default({}),
+            folder: z.string().default("."),
             app: z.object({
-                file: z.string().default("dynip-broker.app.jsonl"),
                 max_file_size: z.number().default(10 * 1024 * 1024),
                 max_files: z.number().default(10)    
+            }).default({}),
+            http: z.object({
+                max_file_size: z.number().default(10 * 1024 * 1024),
+                max_files: z.number().default(10)
             }).default({})
         }).default({})
     }).default({}),
