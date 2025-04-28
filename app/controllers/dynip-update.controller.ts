@@ -4,6 +4,8 @@ import type { Context } from "@oak/oak"
 import { DynipProtoError } from "../share/errors.ts"
 import { ClientIpV4UpdateRequestedEvent, ClientIpV6UpdateRequestedEvent } from "../share/events.ts"
 import type { AccountService, EventStore, PublishApplicationEventService } from "./interfaces.ts"
+import { logger } from "../share/logger.ts";
+import { CorrelationIdContext } from "../share/correltionid.ts"
 
 
 
@@ -11,7 +13,14 @@ import type { AccountService, EventStore, PublishApplicationEventService } from 
 
 export function createControllerUpdateIp (accountService: AccountService, eventstore: EventStore,  pubsub: PublishApplicationEventService) {
 
+    const cidContext = CorrelationIdContext.getInstance()
+    const controllerLogger = logger.getChild('update-ip-controller')
+
     return async (ctx: Context) => {
+
+        const log = controllerLogger.getChild(cidContext.CorrelationId)
+
+        log.debug('update client ip')
 
         if (!ctx.state.client) {
             throw new DynipProtoError("Missing client in context state", 500, "911")
