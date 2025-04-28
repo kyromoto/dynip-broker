@@ -5,6 +5,10 @@ import { z } from "zod";
 
 import { logger } from "../../share/logger.ts";
 
+import type {
+    AccountService as ApiControllerAccountService
+} from "../../controllers/interfaces.ts"
+
 import {
     type Action as HetznerDnsRecordAction,
     ACTION_NAME as HetznerDnsRecordActionName
@@ -33,10 +37,12 @@ import { Account, type Action, type Client } from "./account.models.ts";
 
 export class YAMLAccountService {
 
+    private static _log = logger.getChild("yaml-account-service")
+
     public static async init(filename: string) {
 
         if (!await exists(filename, { isFile: true })) {
-            logger.debug("Account store file does not exist. Creating empty file", { filename })
+            this._log.debug("Account store file does not exist. Creating empty file", { filename })
             await Deno.writeTextFile(filename, "")
         }
 
@@ -55,6 +61,8 @@ export class YAMLAccountService {
             
             getActionsByClient: async (clientId: string): Promise<HetznerDnsRecordAction[]> => {
         
+                YAMLAccountService._log.debug("get actions by client", { clientId })
+
                 const clients = await this.getClients()
                 const client = clients.find(client => client.id === clientId)
         
@@ -80,6 +88,8 @@ export class YAMLAccountService {
             
             getActionsByClientId: async (clientId: string): Promise<HetznerFirewallRuleAction[]> => {
         
+                YAMLAccountService._log.debug("get actions by clientId", { clientId })
+
                 const clients = await this.getClients()
                 const client = clients.find(client => client.id === clientId)
         
@@ -99,6 +109,8 @@ export class YAMLAccountService {
 
             getAllClientIdsWithLinkedAction: async (actionId: string): Promise<string[]> => {
         
+                YAMLAccountService._log.debug("get all client ids with linked action", { actionId })
+
                 const clients = await this.getClients()
         
                 return clients
@@ -112,7 +124,10 @@ export class YAMLAccountService {
 
     getApiControllerAccountService(): ApiControllerAccountService {
         return {
-            getAccounts: async () => await this.getAccounts()
+            getAccounts: async () => {
+                YAMLAccountService._log.debug("get accounts")
+                return await this.getAccounts()
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import type { ApplicationEvent } from "../events.ts";
+import type { ApplicationEvent } from "../share/events.ts";
 import type { Account } from "../services/account-repository/account.models.ts";
 
 
