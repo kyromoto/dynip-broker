@@ -6,3 +6,4 @@
 
 !deno.json
 !import_map.json
+!.github/**/*

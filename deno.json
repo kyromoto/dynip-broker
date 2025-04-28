@@ -1,6 +1,6 @@
 {
-  "name": "dynip-broker",
-  "version": "0.0.0",
+  "name": "@kyromoto/dynip-broker",
+  "version": "0.1.0",
   "tasks": {
     "start:dev": "CONFIG_FILE=config.yml LOG_LEVEL=debug DENO_ENV=development deno run --allow-all --watch app/main.ts"
   },
