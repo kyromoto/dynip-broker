@@ -37,9 +37,11 @@ import { Account, type Action, type Client } from "./account.models.ts";
 
 export class YAMLAccountService {
 
-    private static _log = logger.getChild("yaml-account-service")
+    private static _log = logger.getChild("yaml-account-repository")
 
     public static async init(filename: string) {
+
+        this._log.info("init instance", { filename })
 
         if (!await exists(filename, { isFile: true })) {
             this._log.debug("Account store file does not exist. Creating empty file", { filename })
