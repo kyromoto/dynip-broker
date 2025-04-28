@@ -1,6 +1,7 @@
 import { Application } from '@oak/oak'
 import { oakCors as cors } from "@tajpouria/cors"
 
+import { version } from "./version.ts";
 import { logger } from "./share/logger.ts"
 import { config } from "./share/config.ts"
 import { createApiRouter } from "./controllers/routes.ts"
@@ -15,6 +16,7 @@ import { createMiddlewareRequestLogging } from "./controllers/logger.middleware.
 
 
 
+logger.info(`dynip-broker v${version}`)
 
 const nc = await connectToNats(getNatsConnectionOptions(config));
 
