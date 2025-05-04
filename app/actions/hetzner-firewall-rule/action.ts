@@ -13,11 +13,10 @@ import { getAllFirewalls, setRules } from "./hetzner-api.ts";
 
 export function createActionHetznerFirewallRule (accountService: AccountService, projector: ClientIpsProjector, pubsub: SubscribeIpUpdateRequestService) {
 
-    const actionLogger = logger.getChild(ACTION_NAME)
-    const queue = new EventQueue(ACTION_NAME, async (event, cidContext) => {
+    const queue = new EventQueue(ACTION_NAME, async event => {
 
-        const cid = cidContext.CorrelationId
-        const log = actionLogger.getChild(cid).with({ correlation_id: cid, event })
+        const cid = event.correlation_id || 'unknown'
+        const log = logger.getChild(ACTION_NAME).with({ correlation_id: cid, event })
 
         log.debug(`Processing event`)
 

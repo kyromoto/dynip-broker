@@ -7,6 +7,7 @@ export const BaseEvent = z.object({
     type: z.string().nonempty(),
     subject: z.string().optional(),
     data: z.any().optional(),
+    correlation_id: z.string().uuid().optional(),
     occurred_at: z.string().datetime().default(() => new Date().toISOString())
 })
 

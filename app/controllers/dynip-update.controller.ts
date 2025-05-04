@@ -80,6 +80,7 @@ export function createControllerUpdateIp (accountService: AccountService, events
                         source: "dynip-broker",
                         type: "client-ipv4-update-requested.v1",
                         subject: client.id,
+                        correlation_id: correlationId,
                         data: { ipv4 }
                     } as ClientIpV4UpdateRequestedEvent)
 
@@ -96,6 +97,7 @@ export function createControllerUpdateIp (accountService: AccountService, events
                         source: "dynip-broker",
                         type: "client-ipv6-update-requested.v1",
                         subject: client.id,
+                        correlation_id: correlationId,
                         data: { ipv6 }
                     } as ClientIpV6UpdateRequestedEvent)
 
