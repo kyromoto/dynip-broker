@@ -12,6 +12,7 @@ import { JSONEventStore } from "./services/event-store/eventstore.service.ts";
 import { createMiddlewareErrorHandler } from "./controllers/error.middleware.ts";
 import { connectToNats, getNatsConnectionOptions } from "./services/messaging/nats.ts";
 import { createMiddlewareRequestLogging } from "./controllers/logger.middleware.ts";
+import { createMiddlewareCorrelation } from "./controllers/correlation.middleware.ts";
 
 
 
@@ -75,6 +76,7 @@ app.addEventListener("error", ev => {
 
 const router = createApiRouter(accountService.getApiControllerAccountService(), eventstoreService, eventPublishService);
 
+app.use(createMiddlewareCorrelation());
 app.use(createMiddlewareErrorHandler());
 app.use(createMiddlewareRequestLogging());
 app.use(cors());

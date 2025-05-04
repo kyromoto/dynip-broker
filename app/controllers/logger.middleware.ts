@@ -1,6 +1,6 @@
 import type { Context, Next } from "@oak/oak";
-import { CorrelationIdContext } from "../share/correltionid.ts";
 import { httpLogger } from "../share/logger.ts";
+import { getCorrelationId } from "../share/correlation-context.ts";
 
 
 const getMeta = (ctx: Context, durationMs: number, cid: string) => {
@@ -22,34 +22,31 @@ const getMessage = (ctx: Context, durationMs: number, error: unknown | undefined
 
 export function createMiddlewareRequestLogging () {
 
-    const cidContext = CorrelationIdContext.getInstance()
-
     return async (ctx: Context, next: Next) => {
 
         const start = Date.now()
-        const cid = cidContext.CorrelationId
+        const contextId = ctx.state.CorrelationContextId
+        const correlationId = getCorrelationId(contextId)
+        const log = httpLogger.getChild("http-request").with({ correlation_id: correlationId })
 
         try {
             await next()
-
+        } catch (error: unknown) {
+            throw error
+        } finally {
+            
             const durationMs = Date.now() - start
             const message = getMessage(ctx, durationMs, null)
-            const meta = getMeta(ctx, durationMs, cid)
-            
+            const meta = getMeta(ctx, durationMs, correlationId)
             
             if (ctx.response.status >= 500) {
-                httpLogger.error(message, meta)
+                log.error(message, meta)
             } else if (ctx.response.status >= 400) {
-                httpLogger.warn(message, meta)
+                log.warn(message, meta)
             } else {
-                httpLogger.info(message, meta)
+                log.info(message, meta)
             }
 
-        } catch (error: unknown) {
-            const durationMs = Date.now() - start
-            httpLogger.error(getMessage(ctx, durationMs, error), { ...getMeta(ctx, durationMs, cid), error})
-
-            throw error
         }
 
     }

@@ -4,17 +4,17 @@ import type { Account } from "../services/account-repository/account.models.ts";
 
 
 export interface EventStoreAPI {
-    getEventStream(filterBySubject?: string): Promise<ApplicationEvent[]>
+    getEventStream(con4xtId: string, filterBySubject?: string): Promise<ApplicationEvent[]>
 }
 
 export interface EventStore {
-    publishEvents(tx: (api: EventStoreAPI) => Promise<ApplicationEvent[]>): Promise<ApplicationEvent[]>
+    publishEvents(contextId: string, tx: (api: EventStoreAPI) => Promise<ApplicationEvent[]>): Promise<ApplicationEvent[]>
 }
 
 export interface PublishApplicationEventService {
-    publish: (events: ApplicationEvent[]) => Promise<void>
+    publish: (contextId: string, events: ApplicationEvent[]) => Promise<void>
 }
 
 export interface AccountService {
-    getAccounts(): Promise<Account[]>
+    getAccounts(contextId: string): Promise<Account[]>
 }

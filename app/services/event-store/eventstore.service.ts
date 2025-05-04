@@ -34,7 +34,7 @@ export class JSONEventStore implements EventStore, EventStoreAPI  {
     }
 
 
-    async publishEvents( tx: (api: EventStoreAPI) => Promise<ApplicationEvent[]>): Promise<ApplicationEvent[]> {
+    async publishEvents(_contextId: string, tx: (api: EventStoreAPI) => Promise<ApplicationEvent[]>): Promise<ApplicationEvent[]> {
         
         try {
 

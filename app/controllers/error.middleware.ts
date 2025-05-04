@@ -1,22 +1,21 @@
 import type { Context, Next } from "@oak/oak";
 import { logger } from "../share/logger.ts"
-import { CorrelationIdContext } from "../share/correltionid.ts";
 import { ApplicationError, ClientError } from "../share/errors.ts";
+import { getCorrelationId } from "../share/correlation-context.ts";
+
+
 
 export function createMiddlewareErrorHandler () {
-
-    const httpLogger = logger.getChild("http-error")
-    const cidContext = CorrelationIdContext.getInstance()
 
     return async (ctx: Context, next: Next) => {
     
         try {
-            const cid = ctx.request.headers.get("X-Correlation-Id") || crypto.randomUUID()
-            ctx.response.headers.set("X-Correlation-Id", cid)
-            await cidContext.Storage.run(cid, next)
+            await next()
         } catch (error) {
 
-            const log = httpLogger.getChild(cidContext.CorrelationId).with({ correlation_id: cidContext.CorrelationId })
+            const contextId = ctx.state.CorrelationContextId;
+            const correlationId = getCorrelationId(contextId)
+            const log = logger.getChild("http-error").with({ correlation_id: correlationId })
 
             if (error instanceof ClientError) {
                 log.error(error.message, { type: "client", ...error.meta })

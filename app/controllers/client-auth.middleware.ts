@@ -4,7 +4,7 @@ import type { Context, Next } from "@oak/oak";
 import { DynipProtoError } from "../share/errors.ts";
 import type { AccountService } from "./interfaces.ts";
 import { logger } from "../share/logger.ts";
-import { CorrelationIdContext } from "../share/correltionid.ts";
+import { getCorrelationId } from "../share/correlation-context.ts";
 
 
 
@@ -15,12 +15,11 @@ import { CorrelationIdContext } from "../share/correltionid.ts";
 
 export function createMiddlewareAuthorizeClient (accountService: AccountService) {
 
-    const cidContext = CorrelationIdContext.getInstance()
-    const mwLogger = logger.getChild('client-auth-middleware')
-
     return async (ctx: Context, next: Next) => {
 
-        const log = mwLogger.getChild(cidContext.CorrelationId)
+        const contextId = ctx.state.CorrelationContextId;
+        const correlationId = getCorrelationId(contextId)
+        const log = logger.getChild('client-auth-middleware').with({ correlation_id: correlationId })
 
         log.debug(`Authorize client`)
 

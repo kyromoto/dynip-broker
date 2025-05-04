@@ -10,7 +10,7 @@ export class PublishIpUpdateRequestServiceAdapter implements PublishApplicationE
     
     constructor(private readonly nc: NatsConnection) {}
     
-    publish (events: ApplicationEvent[]) : Promise<void> {
+    publish (_contextId: string, events: ApplicationEvent[]) : Promise<void> {
         
         for (const event of events) {
             this.nc.publish('dynip-broker.' + event.type, JSON.stringify(event))

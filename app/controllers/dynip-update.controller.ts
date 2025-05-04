@@ -5,7 +5,7 @@ import { DynipProtoError } from "../share/errors.ts"
 import { ClientIpV4UpdateRequestedEvent, ClientIpV6UpdateRequestedEvent } from "../share/events.ts"
 import type { AccountService, EventStore, PublishApplicationEventService } from "./interfaces.ts"
 import { logger } from "../share/logger.ts";
-import { CorrelationIdContext } from "../share/correltionid.ts"
+import { getCorrelationId } from "../share/correlation-context.ts";
 
 
 
@@ -13,12 +13,11 @@ import { CorrelationIdContext } from "../share/correltionid.ts"
 
 export function createControllerUpdateIp (accountService: AccountService, eventstore: EventStore,  pubsub: PublishApplicationEventService) {
 
-    const cidContext = CorrelationIdContext.getInstance()
-    const controllerLogger = logger.getChild('update-ip-controller')
-
     return async (ctx: Context) => {
 
-        const log = controllerLogger.getChild(cidContext.CorrelationId)
+        const contextId = ctx.state.CorrelationContextId;
+        const correlationId = getCorrelationId(contextId)
+        const log = logger.getChild('update-ip-controller').with({ correlation_id: correlationId })
 
         log.debug('update client ip')
 
@@ -56,7 +55,7 @@ export function createControllerUpdateIp (accountService: AccountService, events
             throw new DynipProtoError("No ip was provided or could be parsed", 500, "911")
         }
 
-        const accounts = await accountService.getAccounts()
+        const accounts = await accountService.getAccounts(contextId)
         const account = accounts.find(account => account.username === ctx.state.account)
 
         if (!account) {
@@ -69,7 +68,7 @@ export function createControllerUpdateIp (accountService: AccountService, events
             throw new DynipProtoError("Client not found", 500, "911")
         }
 
-        const publishedEvents = await eventstore.publishEvents(() => {
+        const publishedEvents = await eventstore.publishEvents(contextId, () => {
 
             const events = ips.map(ip => {
 
@@ -118,7 +117,7 @@ export function createControllerUpdateIp (accountService: AccountService, events
             return Promise.resolve(events)
         })
 
-        await pubsub.publish(publishedEvents)
+        await pubsub.publish(contextId, publishedEvents)
 
         for (const ev of publishedEvents) {
             ctx.response.headers.set(`X-${ev.type}`, ev.id)
